@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMF - God's Mercy Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Base Styles --- */
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: #222;
+            line-height: 1.6;
+            background-color: #f7f7f7;
+        }
+        
+        /* Utility Classes */
+        .section-padding {
+            padding: 5rem 5%;
+        }
+
+        /* Titles and Headings */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin-bottom: 3.5rem;
+            color: #5D4037;
+            text-transform: uppercase;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #A47A4D;
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background: #fff;
+            padding: 1rem 5%;
+            box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            color: #5D4037;
+            text-transform: uppercase;
+        }
+        
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-links li a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 400;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: #A47A4D;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background-color: #5D4037;
+            transition: all 0.3s ease;
+        }
+        
+        /* --- Hero Section --- */
+        #hero {
+            /* Pixabay Image: Runway/High-Fashion */
+            background: url('./images.html/fashion-9464875_1920.jpg') no-repeat center center/cover;
+            height: 90vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            position: relative;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .hero-content {
+            z-index: 10;
+            max-width: 1000px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            /* Reduced font size for better balance */
+            font-family: 'Cinzel', serif;
+            font-size: 2rem; /* Corrected: Using clamp for responsiveness */
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.4rem); /* Corrected: Using clamp for responsiveness */
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #eee;
+        }
+
+        .cta-button {
+            position: relative;
+            top: 0; /* Removed top: 20px offset */
+            text-decoration: none;
+            background: #A47A4D; 
+            color: #fff;
+            padding: 1.2rem 4rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 2px solid #A47A4D;
+            display: inline-block; /* Added for correct spacing in HTML */
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: #A47A4D;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* --- About Story Section (UX Refinement: Padding) --- */
+        #about {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center;
+            padding: 5rem 5%; /* Base padding */
+        }
+        
+        .about-image {
+            flex: 1 1 40%;
+            padding-right: 3rem;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .about-text {
+            flex: 1 1 50%;
+            padding-left: 1rem;
+        }
+
+        .about-text h2 {
+            text-align: left;
+            margin-top: 0;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* --- Featured Ankara Section (UX Refinement: Padding/Min-Height) --- */
+        #ankara-feature {
+            background-color: #f7f7f7;
+            padding: 5rem 5%; /* Base padding */
+            text-align: center;
+        }
+
+        .ankara-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .ankara-card-img {
+            flex: 1 1 50%;
+        }
+
+        .ankara-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            min-height: 400px; /* Base min-height */
+        }
+
+        .ankara-card-content {
+            flex: 1 1 40%;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+        }
+        
+        .ankara-card-content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #A47A4D;
+            margin-top: 0;
+        }
+
+        /* --- Collections Grid (No Change) --- */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 500px; /* Consistent height */
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .category-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .category-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            padding: 1.5rem;
+            color: white;
+        }
+
+        .category-info h3 {
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+        }
+
+        .category-info a {
+            color: #A47A4D;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-block;
+            margin-top: 0.5rem;
+            transition: color 0.3s;
+        }
+        .category-info a:hover {
+            color: #fff;
+        }
+
+        /* --- Featured Product Banner (No Change) --- */
+        #featured {
+            /* Pixabay Image: Model in Statement Piece */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./images.html/woman-716592_1920.jpg') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin: 3rem 0;
+        }
+
+        .featured-content h3 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 1rem;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.7);
+        }
+        .featured-content p {
+             font-size: 1.2rem;
+             margin-bottom: 2rem;
+             font-weight: 300;
+        }
+
+        /* --- Lookbook/Campaign Section (No Change) --- */
+        #campaign {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .lookbook-grid {
+            grid-template-columns: repeat(4, 1fr);
+            display: grid;
+            gap: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .lookbook-item img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* --- NEW: Subscription Section Styles --- */
+        #subscribe {
+            text-align: center;
+            padding: 4rem 5%;
+            background: #fff; /* White background to stand out */
+            border-top: 1px solid #ddd;
+        }
+
+        #subscribe h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #5D4037;
+            margin-bottom: 0.5rem;
+        }
+
+        #subscribe p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .subscribe-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .subscribe-form input[type="email"] {
+            flex-grow: 1;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .subscribe-form input[type="email"]:focus {
+            outline: none;
+            border-color: #A47A4D;
+        }
+
+        .subscribe-form button {
+            background: #5D4037; /* Darker tone for contrast */
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s;
+        }
+
+        .subscribe-form button:hover {
+            background: #A47A4D;
+        }
+        
+        /* --- Footer --- */
+        footer {
+            background: #222;
+            color: white;
+            padding: 2rem 5%;
+            margin-top: 0; /* Removed margin now that subscribe section is directly above */
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .social-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #A47A4D;
+        }
+
+        /* --- Mobile Responsiveness (Refinements added here) --- */
+        @media (max-width: 992px) {
+            
+            /* ABOUT Section Refinement */
+            #about {
+                padding-top: 3rem; /* Reduced padding on small screens */
+            }
+            .about-image { 
+                padding-right: 0; 
+                margin-bottom: 1.5rem; 
+            }
+            .about-image img {
+                border-radius: 4px; /* Slightly reduced border radius for mobile */
+            }
+            
+            /* ANKARA Feature Section Refinement */
+            #ankara-feature {
+                padding: 3rem 5%; /* Reduced padding on small screens */
+            }
+            .ankara-card-img img {
+                min-height: 300px; /* Fine-tune image height for better mobile look */
+            }
+            .ankara-card-content { 
+                padding: 2rem; /* Reduced padding */
+                align-items: center; 
+                text-align: center; 
+            }
+            .ankara-card-content a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .about-image, .about-text { flex: 1 1 100%; padding: 0; }
+            .about-text h2 { text-align: center; }
+            .ankara-card-img, .ankara-card-content { flex: 1 1 100%; }
+            .lookbook-grid { grid-template-columns: repeat(2, 1fr); }
+            .lookbook-item img { height: 350px; }
+
+            /* Mobile Navigation Adjustments */
+            .nav-links {
+                position: absolute;
+                top: 60px; /* Below header */
+                left: 0;
+                flex-direction: column;
+                width: 100%;
+                background: #fff;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                display: none; /* Hidden by default */
+                transition: all 0.3s ease-in-out;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                text-align: center;
+                width: 100%;
+                padding: 10px 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+
+            .hamburger {
+                display: flex;
+                z-index: 1001; /* Above mobile menu */
+            }
+        }
+        @media (max-width: 576px) {
+            .lookbook-grid { grid-template-columns: 1fr; }
+            .category-card img, .lookbook-item img { height: 300px; }
+            
+            /* Subscription Form Stacking on Mobile */
+            .subscribe-form {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .subscribe-form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="main-content">
+        <header>
+            <nav>
+                <div class="logo">GMF</div>
+                <div class="hamburger">
+                    <span></span><span></span><span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#shop">Collections</a></li>
+                    <li><a href="#ankara-feature">Ankara</a></li>
+                    <li><a href="#about">Our Story</a></li>
+                    
+                    <li><a href="#subscribe">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <p>LUXURY. CULTURE. ELEGANCE.</p>
+                <h1>GOD'S &nbsp; MERCY &nbsp; FASHION</h1>
+                <a href="#shop" class="cta-button">SHOP THE NEW ARRIVALS</a>
+            </div>
+        </section>
+
+        <section id="about" class="section-padding">
+            <div class="about-image">
+                <img src="./images.html/portrait-6595821_1920.jpg" alt="African Design Studio Process">
+            </div>
+            <div class="about-text">
+                <h2 class="section-title">Our Story: Crafted with Purpose</h2>
+                <p>God's Mercy Fashion was founded on the principle that luxury should be meaningful. We are a cultural bridge, weaving the rich, vibrant tapestry of **African heritage** into contemporary, high-fashion silhouettes.</p>
+                <p>Our commitment extends beyond aesthetics: we prioritize **ethical sourcing**, **artisan collaboration**, and ensuring that every garment carries the story of skilled hands and conscious creation. From Lagos to London, GMF defines modern luxury as quality, culture, and timeless elegance.</p>
+                <p>Join us in celebrating this journey—where tradition meets innovation, and every piece is crafted with purpose.</p>
+                <a href="#" class="cta-button" style="padding: 0.8rem 2rem; font-size: 1rem;">READ THE FULL MANIFESTO</a>
+            </div>
+        </section>
+
+        <section id="ankara-feature" class="section-padding">
+            <h2 class="section-title">Spotlight: The Ankara Revolution</h2>
+            <div class="ankara-card">
+                <div class="ankara-card-img">
+                    <img src="https://i.pinimg.com/1200x/c3/51/2b/c3512b8db07ee3c72442313f3c9227a8.jpg" alt="Female Model in Modern Ankara Dress">
+                </div>
+                <div class="ankara-card-content">
+                    <h3>Wax Print Couture</h3>
+                    <p>Experience Ankara like never before. Our Ankara line reimagines the classic wax print, elevating it into bespoke couture. We utilize bold patterns and luxurious finishes to create structures that demand attention—perfect for the discerning woman who is proud of her culture and commands the global stage.</p>
+                    <a href="#" class="cta-button" style="padding: 1rem 3rem;">DISCOVER THE ANKARA LINE</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="shop" class="section-padding">
+            <h2 class="section-title">Signature Collections</h2>
+            <div class="category-grid">
+                
+                <div class="category-card">
+                    <img src="./images.html/ae9c5ceb-092a-43c1-8b7b-df157f65d2ea.jpg" alt="Traditional African Design on Model">
+                    <div class="category-info">
+                        <h3>The Heritage Line</h3>
+                        <p>Artisan techniques, redefined for the modern cultural connoisseur.</p>
+                        <a href="#">Shop Now &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <img src="https://i.pinimg.com/736x/07/a4/c0/07a4c04561c4ba89681fa82b10c8c774.jpg" alt="Female Model in Luxury Ready-to-Wear">
+                    <div class="category-info">
+                        <h3>Modern Essentials</h3>
+                        <p>Impeccably tailored, high-grade ready-to-wear for everyday luxury.</p>
+                        <a href="#">Shop Now &rarr;</a>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <img src="https://i.pinimg.com/736x/6f/95/f7/6f95f7d5e072943f16142ca35f35ef94.jpg" alt="Elegant Couture Gown on Female Model">
+                    <div class="category-info">
+                        <h3>Couture & Evening</h3>
+                        <p>Bespoke elegance for the red carpet and significant life events.</p>
+                        <a href="#">Shop Now &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <img src="https://i.pinimg.com/736x/8c/95/3e/8c953ebb47ae8532969ce143f2b097e8.jpg" alt="Luxury Accessories and Jewelry">
+                    <div class="category-info">
+                        <h3>Luxury Accents</h3>
+                        <p>Finishing touches: hand-picked accessories to elevate your style.</p>
+                        <a href="#">Shop Now &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured">
+            <div class="featured-content">
+                <h3>The 2025 Capsule Collection</h3>
+                <p>A fusion of urban silhouettes and exclusive hand-stitched detailing. Limited pieces available.</p>
+                <a href="#" class="cta-button">SHOP THE FEATURED PIECE</a>
+            </div>
+        </section>
+
+        <section id="subscribe">
+            <h2>Join the GMF Inner Circle</h2>
+            <p>Be the first to receive exclusive previews, priority access to new collections, and private styling invitations.</p>
+            <form class="subscribe-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </section>
+        <footer>
+            <div class="footer-content">
+                <div class="logo">GMF</div>
+                <p>&copy; 2024 GMF. All rights reserved. | Luxury Fashion & Culture</p>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Smooth Scrolling and Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        // Helper function for smooth scrolling
+        function smoothScrollTo(targetId) {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start' // Scroll to the top of the section
+                });
+            }
+        }
+
+        // 1. Mobile Menu Toggle
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // 2. Smooth Scroll and Menu Close on Link Click
+        document.querySelectorAll('.nav-links li a, .cta-button').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // Get the target section's ID (e.g., '#shop')
+                const targetId = this.getAttribute('href');
+                
+                // Only prevent default and scroll if it's an internal link
+                if (targetId && targetId.startsWith('#') && targetId !== '#') {
+                    e.preventDefault();
+                    
+                    // Close the mobile menu if it is active
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    
+                    smoothScrollTo(targetId);
+                }
+            });
+        });
+        
+        // 3. New: Subscription Form Basic Functionality (Prevents page refresh)
+        const subscribeForm = document.querySelector('.subscribe-form');
+        if (subscribeForm) {
+            subscribeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Thank you for joining the GMF Inner Circle!');
+                this.reset(); // Clear the form
+            });
+        }
+    </script>
+</body>
+</html>
