@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJ-Fashion Empire Style Insights Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* --- Base Styles --- */
+        body { 
+            margin: 0; 
+            overflow-x: hidden; 
+            font-family: 'Poppins', sans-serif; 
+            color: #222; 
+            line-height: 1.6; 
+            background-color: #fff; 
+            padding-top: 80px; /* Space for the fixed desktop header */ 
+        }
+        .section-padding { padding: 4rem 5%; }
+        .section-title { font-family: 'Cinzel', serif; font-size: clamp(2rem, 5vw, 3.2rem); text-align: center; margin-bottom: 2.5rem; color: #A47A4D; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 3px; background-color: #5D4037; margin: 15px auto 0; border-radius: 2px; }
+
+        /* --- Header & Navigation (FIXED) --- */
+        header { 
+            background: #fff; 
+            padding: 1rem 5%; 
+            box-shadow: 0 1px 10px rgba(0,0,0,0.05); 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            z-index: 1000; /* Ensures it stays on top */
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo { font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.8rem; letter-spacing: 3px; color: #A47A4D; text-transform: uppercase; }
+        .nav-links {
+            position: relative;
+            right: 150px;
+             list-style: none; display: flex; gap: 2.5rem; margin: 0; padding: 0; }
+        .nav-links li a { text-decoration: none; color: #555; font-weight: 400; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links li a:hover { color: #5D4037; }
+
+        /* --- MOBILE Bottom Navigation (FIXED) --- */
+        .mobile-nav-bottom {
+            display: none; 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 2000; /* High z-index to stay above content/modals */
+        }
+        .mobile-nav-bottom ul {
+            display: flex;
+            justify-content: center; /* Center the single link */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .mobile-nav-bottom ul li a {
+            display: block;
+            text-align: center;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #555;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .mobile-nav-bottom .icon { font-size: 20px; display: block; margin-bottom: 2px; }
+
+        /* --- Trend Hub Styles (More content) --- */
+        .trend-intro { text-align: center; max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #444; }
+
+        /* --- New Feature: Filter Bar --- */
+        .filter-bar {
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .filter-bar button {
+            background: #F0EBE3;
+            border: 1px solid #D1C4E9;
+            color: #5D4037;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .filter-bar button:hover, .filter-bar button.active {
+            background: #A47A4D;
+            color: white;
+            border-color: #A47A4D;
+        }
+
+        .trend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .trend-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .trend-item:hover {
+            transform: translateY(-8px); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .trend-item .media-content {
+            width: 100%;
+            height: 480px; 
+            object-fit: cover;
+            display: block;
+            border: none;
+        }
+
+        .trend-item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+            padding: 2rem 1rem 1rem;
+            color: white;
+            text-align: left;
+            z-index: 2;
+        }
+        .trend-item-info strong {
+            display: block;
+            font-weight: 600;
+            font-size: 1.1rem;
+            line-height: 1.3;
+        }
+        .trend-item-info span {
+            display: block;
+            font-weight: 300;
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            color: #ccc;
+        }
+
+        .shoppable-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #A47A4D;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 50;
+        }
+        
+        /* --- New Feature: Social/Designer Buttons --- */
+        .trend-actions {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 50;
+            display: flex;
+            gap: 8px;
+        }
+        .trend-actions button {
+            background: rgba(255, 255, 255, 0.85);
+            border: none;
+            color: #5D4037;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .trend-actions button:hover {
+            background: #A47A4D;
+            color: white;
+        }
+        /* Style for the LIKE button when active/liked */
+        .trend-actions .like-btn.liked {
+            color: #E91E63; /* Pink or Red */
+            background: rgba(233, 30, 99, 0.2);
+            border: 1px solid #E91E63;
+        }
+        .trend-actions .like-btn.liked:hover {
+            color: white;
+            background: #E91E63;
+        }
+        .like-btn i {
+            margin-right: 3px;
+        }
+        /* Remove the sticky buy bar styles as it's no longer needed in the modal */
+        /* --- Modal Viewer --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2500; /* Higher than mobile nav */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.95);
+            animation: fadeIn 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content-wrapper {
+            position: relative;
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 1000px;
+            height: 90vh;
+            text-align: center;
+            padding-top: 5vh;
+        }
+        .modal-content {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            opacity: 0.8;
+            z-index: 2600;
+        }
+        .modal-close:hover, .modal-close:focus {
+            color: #A47A4D;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: 1;
+        }
+        
+        /* The old sticky-buy-bar is removed as per request */
+
+        /* --- Designer Note Modal (Simulated) --- */
+        #designerNoteModal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+        }
+        .designer-note-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+        .designer-note-content h3 {
+            font-family: 'Cinzel', serif;
+            color: #5D4037;
+            margin-top: 0;
+        }
+        .designer-note-content p {
+            font-size: 1rem;
+            color: #444;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+
+        /* --- Discover Section (Removed Buy Button) --- */
+        .discover-section {
+            background-color: #F0EBE3; 
+            text-align: center;
+            padding: 4rem 5%;
+            margin-top: 4rem;
+        }
+        .discover-section h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: #5D4037;
+            margin-bottom: 1rem;
+        }
+        .discover-section p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #444;
+        }
+        .cta-button { 
+            text-decoration: none; background: #A47A4D; color: #fff; padding: 1rem 3rem; 
+            border-radius: 50px; font-weight: 600; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase; 
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: none; display: inline-block; 
+        }
+        .cta-button:hover { background: #5D4037; transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.3); 
+        }
+
+
+        /* --- Responsive Adjustments (THE FIX) --- */
+        @media (max-width: 992px) {
+             .nav-links { 
+                   position: relative;
+            right: 120px;
+                display: inline; 
+            }
+             .mobile-nav-bottom { display: block; }
+             .trend-item .media-content { height: 400px; }
+             
+             /* FIX 1: Remove top padding on mobile */
+             body { 
+                 padding-top: 0; 
+                 padding-bottom: 60px; /* New: Add space for the fixed bottom nav */
+             } 
+             
+             /* FIX 2: Make header static on mobile */
+             header { 
+                 position: static; 
+                 box-shadow: none; 
+             }
+             
+             nav { padding: 10px 5%; }
+             
+             .modal-close {
+                 top: 10px;
+                 right: 15px;
+                 font-size: 30px;
+             }
+             /* Removed sticky-buy-bar mobile styles as the element is gone */
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <div class="logo">AJ-Empire</div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li> 
+            </ul>
+        </nav>
+    </header>
+
+    <section id="trend-watch" class="section-padding">
+        <h1 class="section-title">AJ-Empire Style Insights</h1>
+        <div class="trend-intro">
+            <p>Your ultimate destination for **real-time fashion inspiration**. Explore the latest viral styles, runway moments, and cultural trends from the creators shaping the global luxury landscape.</p>
+        </div>
+        
+        <div class="filter-bar">
+            <button class="active" data-filter="all">All Insights</button>
+            <button data-filter="video">Video Guides</button>
+            <button data-filter="couture">Couture</button>
+            <button data-filter="menswear">Womenswear</button>
+        </div>
+        
+        <div class="trend-grid">
+            
+            <div class="trend-item" data-media-type="iframe" data-media-source="https://www.youtube.com/embed/-OWWrqPP_FM" data-tags="video" data-designer-note="The 'Quiet Luxury' movement perfectly aligns with our focus on impeccable tailoring and timeless silhouettes. We prioritized rich, low-key fabrics in our latest capsule to deliver this effortlessly chic aesthetic.">
+                <div class="shoppable-tag">Video Guide</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="345"><i class="fas fa-heart"></i> 345</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'Recreating bubu GOWN with invisible band');"><i class="fas fa-share-alt"></i></button>
+                    <button onclick="event.stopPropagation(); openDesignerModal(this);"><i class="fas fa-edit"></i></button>
+                </div>
+                
+                <iframe width="853" height="480" src="https://www.youtube.com/embed/-OWWrqPP_FM" title="HOW TO cut and sew a BUBU GOWN with invisible band| BEGINNER FRIENDLY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                <div class="trend-item-info">
+                    <strong>HOW TO cut and sew a BUBU GOWN with invisible band| BEGINNER FRIENDLY</strong>
+                    <span>Source: @StyleEdit | 1.2M Views</span>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-media-type="image" data-media-source="./images.html/Ombre Fake 2in1 Orange Square Neck Dress.jpg" data-tags="image couture">
+                <div class="shoppable-tag">Couture Look</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="78"><i class="fas fa-heart"></i> 78</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'Ombre Fake 2in1 Orange Square Neck Dress Look');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <img class="media-content" src="./images.html/Ombre Fake 2in1 Orange Square Neck Dress.jpg" alt="Ombre Orange Square Neck Dress">
+                <div class="trend-item-info">
+                    <strong>Ombre Fake 2in1 Orange Square Neck Dress Look</strong>
+                    <span>Source: @MinimalChic | 78K Saves</span>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-media-type="image" data-media-source="./images.html/6274675d-d7f6-4fe1-885b-de4c49434eba.jpg" data-tags="image couture" data-designer-note="The architectural shape of this piece is a testament to our commitment to structure. It uses an internal boning system inspired by traditional West African bustiers for support and drama.">
+                <div class="shoppable-tag">New Season</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="2150"><i class="fas fa-heart"></i> 2.1K</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'Architectural African Gown Silhouette');"><i class="fas fa-share-alt"></i></button>
+                    <button onclick="event.stopPropagation(); openDesignerModal(this);"><i class="fas fa-edit"></i></button>
+                </div>
+                <img class="media-content" src="./images.html/6274675d-d7f6-4fe1-885b-de4c49434eba.jpg" alt="Architectural Gown">
+                <div class="trend-item-info">
+                    <strong>Runway Recap: The Architectural Gown Silhouette</strong>
+                    <span>Source: @VogueAfrica | 215K Likes</span>
+                </div>
+            </div>
+
+            <div class="trend-item" data-media-type="iframe" data-media-source="https://www.youtube.com/embed/f6S9fuB8txg" data-tags="video accessory">
+                <div class="shoppable-tag">Accessory Guide</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="45"><i class="fas fa-heart"></i> 45</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'Tutorial: Mastering the Head-Tie for a Modern Look');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <iframe class="media-content" src="https://www.youtube.com/embed/f6S9fuB8txg?modestbranding=1&controls=0&rel=0" title="How to Tie a Gele | Head Tie Tutorial for a Modern Look" allowfullscreen></iframe>
+                <div class="trend-item-info">
+                    <strong>How to Tie a Gele | Head Tie Tutorial for a Modern Look</strong>
+                    <span>Source: @AnkaraStyleGuru | 45K Views</span>
+                </div>
+            </div>
+
+            <div class="trend-item" data-media-type="image" data-media-source="https://i.pinimg.com/1200x/d3/82/f3/d382f3bceceb0d18b9365734d8cd1674.jpg" data-tags="image menswear" data-designer-note="This look is built around the 'Nigerian Indigo Jacket.' The deep, saturated color is achieved through traditional dyeing, making each piece subtly unique—a key feature in our men's limited-run tailoring.">
+                 <div class="shoppable-tag">Menswear Look</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="1450"><i class="fas fa-heart"></i> 1.4K</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'Structured Silhouettes & Deep Tones Menswear');"><i class="fas fa-share-alt"></i></button>
+                    <button onclick="event.stopPropagation(); openDesignerModal(this);"><i class="fas fa-edit"></i></button>
+                </div>
+                <img class="media-content" src="https://i.pinimg.com/1200x/d3/82/f3/d382f3bceceb0d18b9365734d8cd1674.jpg" alt="Nigerian Indigo Jacket">
+                <div class="trend-item-info">
+                    <strong>Womenswear: Structured Nigerian Indigo Jacket & Deep Tones</strong>
+                    <span>Source: @GQStyleAfrica | 145K Likes</span>
+                </div>
+            </div>
+
+            <div class="trend-item" data-media-type="image" data-media-source="./images.html/download (1).jpg" data-tags="image">
+                <div class="shoppable-tag">Street Style</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="55"><i class="fas fa-heart"></i> 55</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'Monochromatic Power Dressing: Caramel & Mocha');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <img class="media-content" src="./images.html/download (1).jpg" alt="Monochromatic Fashion Caramel Mocha">
+                <div class="trend-item-info">
+                    <strong>Monochromatic Power Dressing: Caramel & Mocha</strong>
+                    <span>Source: @TrendForecasting | 55K Saves</span>
+                </div>
+            </div>
+
+            <div class="trend-item" data-media-type="iframe" data-media-source="https://www.youtube.com/embed/WTV3tNT_YK4" data-tags="video couture">
+                <div class="shoppable-tag">Couture Video</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="32"><i class="fas fa-heart"></i> 32</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'How to Sew this Stylish OVERBUST CAGED Corset');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <iframe width="853" height="480" src="https://www.youtube.com/embed/WTV3tNT_YK4" title="How to Sew this Stylish OVERBUST CAGED Corset." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="trend-item-info">
+                    <strong>How to Sew this Stylish OVERBUST CAGED Corset</strong>
+                    <span>Source: @CultureFiles | 32K Views</span>
+                </div>
+            </div>
+
+            <div class="trend-item" data-media-type="image" data-media-source="https://i.pinimg.com/1200x/96/cd/4c/96cd4cab5165ac349735d0008f073d09.jpg" data-tags="image accessory" data-designer-note="We elevated traditional West African gold-casting techniques to create these bold, yet light-weight accents. The geometric shape is a nod to modern architecture, balancing heritage with high-fashion.">
+                <div class="shoppable-tag">Accessory</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="1120"><i class="fas fa-heart"></i> 1.1K</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'The Statement Earring: Bold Gold & Geometric Shapes');"><i class="fas fa-share-alt"></i></button>
+                    <button onclick="event.stopPropagation(); openDesignerModal(this);"><i class="fas fa-edit"></i></button>
+                </div>
+                <img class="media-content" src="https://i.pinimg.com/1200x/96/cd/4c/96cd4cab5165ac349735d0008f073d09.jpg" alt="Geometric Gold Earrings">
+                <div class="trend-item-info">
+                    <strong>The Statement Earring: Bold Gold & Geometric Shapes</strong>
+                    <span>Source: @LuxuryAccents | 112K Shares</span>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-media-type="image" data-media-source="https://i.pinimg.com/1200x/1d/1e/df/1d1edfcf578f092d4c931a79548e1e3d.jpg" data-tags="image menswear">
+                <div class="shoppable-tag">Menswear</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="89"><i class="fas fa-heart"></i> 89</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'The New Trench Coat: African Textures Edition');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <img class="media-content" src="https://i.pinimg.com/1200x/1d/1e/df/1d1edfcf578f092d4c931a79548e1e3d.jpg" alt="African Texture Trench Coat">
+                <div class="trend-item-info">
+                    <strong>The New Trench Coat: African Textures Edition</strong>
+                    <span>Source: @AJ_Styling | 89K Saves</span>
+                </div>
+            </div>
+
+            <div class="trend-item" data-media-type="iframe" data-media-source="https://www.youtube.com/embed/PGK7ZK8Ou0E" data-tags="video">
+                 <div class="shoppable-tag">Video Guide</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="15"><i class="fas fa-heart"></i> 15</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'How to Cut and Sew a Wide leg Palazzo Pant Trouser with Pleats');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <iframe width="853" height="480" src="https://www.youtube.com/embed/PGK7ZK8Ou0E" title="How to Cut and Sew a Wide leg Palazzo Pant Trouser with Pleats" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="trend-item-info">
+                    <strong>How to Cut and Sew a Wide leg Palazzo Pant Trouser with Pleats</strong>
+                    <span>Source: @AJ_FashionEmpire | 15K Views</span>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-media-type="image" data-media-source="https://i.pinimg.com/1200x/1d/24/45/1d2445405e3b45dd2b2f0df42f6aa655.jpg" data-tags="image">
+                <div class="shoppable-tag">Sale Look</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="990"><i class="fas fa-heart"></i> 990</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'The Return of Maximalism: Bold Print Dress Style');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <img class="media-content" src="https://i.pinimg.com/1200x/1d/24/45/1d2445405e3b45dd2b2f0df42f6aa655.jpg" alt="Bold Print Maximalism Dress">
+                <div class="trend-item-info">
+                    <strong>The Return of Maximalism: How to Style Bold Prints</strong>
+                    <span>Source: @GlobalStyleMag | 99K Likes</span>
+                </div>
+            </div>
+            
+            <div class="trend-item" data-media-type="iframe" data-media-source="https://www.youtube.com/embed/mBu0zOB_1YU" data-tags="video couture">
+                 <div class="shoppable-tag">Tutorial</div>
+                <div class="trend-actions">
+                    <button class="like-btn" onclick="event.stopPropagation(); toggleLike(this);" data-likes="60"><i class="fas fa-heart"></i> 60</button>
+                    <button onclick="event.stopPropagation(); shareItem(this, 'How to Cut and Sew a Vintage Shirt');"><i class="fas fa-share-alt"></i></button>
+                </div>
+                <iframe width="853" height="480" src="https://www.youtube.com/embed/mBu0zOB_1YU" title="How to Cut and Sew a Vintage Shirt | Step-by-Step Sewing Tutorial for Beginners" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                <div class="trend-item-info">
+                    <strong>How to Cut and Sew a Vintage Shirt | Step-by-Step Sewing Tutorial for Beginners</strong>
+                    <span>Source: @AJ_Runway | 60K Views</span>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+ 
+
+    <div class="discover-section">
+        <h3>Elevate Your Wardrobe</h3>
+        <p>Inspired by the global fashion moments you've seen? Explore the curated collections inspired by these trends, all crafted with the unparalleled quality of AJ-Empire.</p>
+        <a href="index.html#shop" class="cta-button">EXPLORE COLLECTIONS &rarr;</a>
+    </div>
+
+    <footer>
+        <div style="text-align: center; color: #ccc; padding: 2rem 5%; background-color: #333;">
+            <p style="margin: 0;">&copy; 2024 AJ-Fashion Empire. Style Insights Hub.</p>
+        </div>
+    </footer>
+    
+    <div class="mobile-nav-bottom">
+        <ul>
+            <li><a href="index.html"><i class="icon fas fa-home"></i>Home</a></li>
+        </ul>
+    </div>
+    
+    <div id="mediaModal" class="modal">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-content-wrapper">
+             </div>
+    </div>
+    
+    <div id="designerNoteModal">
+        <div class="designer-note-content">
+            <span class="modal-close" onclick="closeDesignerModal()">&times;</span>
+            <h3 id="designerNoteTitle">The Designer's Note</h3>
+            <p id="designerNoteText"></p>
+        </div>
+    </div>
+
+    <script>
+        const mediaModal = document.getElementById('mediaModal');
+        const designerModal = document.getElementById('designerNoteModal');
+        const modalContentWrapper = mediaModal.querySelector('.modal-content-wrapper');
+        const designerNoteText = document.getElementById('designerNoteText');
+        const trendItems = document.querySelectorAll('.trend-item');
+        const filterButtons = document.querySelectorAll('.filter-bar button');
+        
+        // Helper to format large numbers
+        function formatNumber(num) {
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+            }
+            return num;
+        }
+
+        // --- NEW FEATURE: Like Functionality ---
+        function toggleLike(button) {
+            const isLiked = button.classList.toggle('liked');
+            let currentLikes = parseInt(button.getAttribute('data-likes'));
+            
+            if (isLiked) {
+                currentLikes += 1;
+            } else {
+                currentLikes -= 1;
+            }
+
+            button.setAttribute('data-likes', currentLikes);
+            button.innerHTML = `<i class="fas fa-heart"></i> ${formatNumber(currentLikes)}`;
+            
+            // OPTIONAL: Send update to server here
+            // console.log('Item liked/unliked. New count:', currentLikes);
+        }
+
+        // Initialize like counts on load to display in K format
+        document.querySelectorAll('.like-btn').forEach(button => {
+            let likes = parseInt(button.getAttribute('data-likes'));
+            button.innerHTML = `<i class="fas fa-heart"></i> ${formatNumber(likes)}`;
+        });
+        
+        // --- NEW FEATURE: Share Functionality ---
+        function shareItem(button, title) {
+            const item = button.closest('.trend-item');
+            const mediaSource = item.getAttribute('data-media-source');
+            
+            // Fallback link: In a real app, this would be the actual unique page URL
+            const url = window.location.href; 
+            const shareText = `Check out this style inspiration on AJ-Empire: ${title}`;
+
+            if (navigator.share) {
+                // Use Web Share API for modern mobile/desktop sharing dialog
+                navigator.share({
+                    title: 'AJ-Empire Insight',
+                    text: shareText,
+                    url: url,
+                })
+                .then(() => console.log('Successful share'))
+                .catch((error) => console.log('Error sharing', error));
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                prompt("Copy this link to share the insight:", url);
+            }
+        }
+        
+        // --- Modal Functions (Media Viewer) ---
+        function openModal(item) {
+            const type = item.getAttribute('data-media-type');
+            const source = item.getAttribute('data-media-source');
+
+            modalContentWrapper.innerHTML = ''; // Clear previous content
+            
+            if (type === 'image') {
+                const img = document.createElement('img');
+                img.src = source;
+                img.className = 'modal-content';
+                modalContentWrapper.appendChild(img);
+            } else if (type === 'iframe') {
+                const iframe = document.createElement('iframe');
+                // Use the data-media-source for the iframe source
+                iframe.src = source; 
+                iframe.className = 'modal-content';
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allow', 'autoplay; encrypted-media');
+                iframe.setAttribute('allowfullscreen', '');
+                modalContentWrapper.appendChild(iframe);
+            }
+            
+            mediaModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            mediaModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+            // Important: Stop video playback by removing iframe/content
+            const media = mediaModal.querySelector('.modal-content');
+            if(media) media.remove();
+        }
+        
+        // --- Designer Note Modal Functions (Unchanged) ---
+        function openDesignerModal(button) {
+            // Find the closest trend-item parent
+            const item = button.closest('.trend-item'); 
+            const note = item.getAttribute('data-designer-note');
+            
+            if (note) {
+                // First close the media modal if it was open (though usually they won't overlap)
+                closeModal(); 
+                
+                designerNoteText.textContent = note;
+                designerModal.style.display = 'flex'; // Use flex for centering
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                alert("No specific designer note for this item. Check out our main Manifesto on the Home page!");
+            }
+        }
+
+        function closeDesignerModal() {
+            designerModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- Event Listeners ---
+        
+        // Open Media Modal when clicking on the item (excluding action buttons)
+        trendItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Ensure clicks on action buttons don't trigger the main modal
+                if (e.target.closest('.trend-actions')) {
+                    return; 
+                }
+                openModal(this);
+            });
+        });
+
+        // Close Modals when clicking outside
+        [mediaModal, designerModal].forEach(modalElement => {
+            modalElement.addEventListener('click', function(e) {
+                if (e.target === mediaModal) {
+                    closeModal();
+                }
+                if (e.target === designerModal) {
+                    closeDesignerModal();
+                }
+            });
+        });
+        
+        // --- Filtering Logic (Removed 'shoppable' button as per request) ---
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                trendItems.forEach(item => {
+                    const tags = item.getAttribute('data-tags') || '';
+                    
+                    if (filter === 'all' || tags.includes(filter)) {
+                        item.style.display = 'block'; 
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+    </script>
+    
+</body>
+</html>
