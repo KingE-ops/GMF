@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJ-Empire: Premium African Fabrics & Materials</title>
+    
+    <style>
+        /* 0. Base Styles & Variables */
+        :root {
+            --primary: #5C3317; /* Earthy Brown/Tan - AJ-Empire Brand Color */
+            --accent: #E0C17E; /* Soft Gold Accent */
+            --text: #333;
+            --background: #fdfdfd;
+            --light-border: #eee;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            --font-main: 'Arial', sans-serif;
+            --font-serif: 'Georgia', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: #7a4a2b;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-family: var(--font-serif);
+            color: var(--primary);
+            margin: 40px 0 30px;
+        }
+
+        /* 1. Header & Navigation (Shared) */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--background);
+            border-bottom: 1px solid var(--light-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .main-nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 5px 0;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+        
+        .main-nav a:hover, .main-nav a.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: var(--accent);
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 2px 5px;
+            line-height: 1;
+        }
+        
+        /* 2. Homepage Styles */
+        #homepage {
+            padding-top: 0;
+        }
+
+        .hero-banner {
+            height: 400px;
+            background-image: url('https://via.placeholder.com/1200x400/5C3317/E0C17E?text=AJ-EMPIRE+HOME+BANNER');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-family: var(--font-serif);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        /* Feature Grid on Homepage */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 30px 0;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+            border: 1px solid var(--light-border);
+            border-radius: 8px;
+            transition: box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        /* Callout Banner */
+        .callout-banner {
+            background-color: var(--accent);
+            padding: 40px 20px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .callout-banner h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        /* 3. Shop Page Styles (Material Listing) - Adopted from previous */
+        #shop-page {
+            display: none; /* Initially hidden */
+        }
+        
+        .controls-bar {
+            padding: 20px 30px;
+            background-color: #fff;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            background-color: var(--background);
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 0 20px 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 1px solid var(--light-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card.hide {
+            display: none;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background-color: #ccc;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-info {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .product-category {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .product-description {
+             font-size: 0.85rem;
+             color: #555;
+             margin: 8px 0;
+             flex-grow: 1;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #d9534f;
+            margin-top: 5px;
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        /* 4. Footer & Messaging */
+        .footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 5px;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .message-box.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 5. Desktop Adjustments */
+        @media (min-width: 768px) {
+            .header {
+                padding: 20px 50px;
+            }
+            .main-nav {
+                display: block;
+            }
+            .controls-bar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 50px;
+            }
+            .search-container {
+                width: 300px;
+            }
+            .product-grid {
+                padding: 0 50px 40px;
+            }
+            .hero-banner {
+                height: 500px;
+            }
+            .hero-content h1 {
+                font-size: 4rem;
+            }
+            .hero-content p {
+                font-size: 1.4rem;
+            }
+            .feature-grid {
+                padding: 50px 0;
+            }
+            .footer {
+                padding: 40px 20px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .main-nav {
+                display: none; /* Hide desktop nav on mobile */
+            }
+            .controls-bar {
+                padding: 15px 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <header class="header">
+        <a href="#" class="logo" data-page="home">AJ-Empire</a>
+        
+        <nav class="main-nav">
+            <a href="#" class="nav-link active" data-page="home">Home</a>
+            <a href="#" class="nav-link" data-page="shop">Materials Shop</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+        </nav>
+        
+        <div class="cart-icon" id="cart-icon">
+            🛒<span id="cart-count">0</span>
+        </div>
+    </header>
+
+    <main id="homepage">
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1>Crafting Your Vision</h1>
+                <p>The finest, ethically sourced fabrics from Africa and the world.</p>
+                <button class="btn-primary" data-page="shop">Explore Our Materials</button>
+            </div>
+        </section>
+
+        <div class="container">
+            <h2 class="section-title">Featured Collections</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3>Eco-Friendly Cotton</h3>
+                    <p>Sustainable, breathable, vibrant prints for everyday wear.</p>
+                    <a href="#" class="btn-primary" style="background: #38761D; padding: 8px 15px;" data-filter-quick="cotton">View Cotton</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>Luxury Silk & Lace</h3>
+                    <p>Exquisite textiles for special occasions and bespoke tailoring.</p>
+                    <a href="#" class="btn-primary" style="background: #7a4a2b; padding: 8px 15px;" data-filter-quick="silk">View Silk</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧥</div>
+                    <h3>Wool & Blends</h3>
+                    <p>High-quality weaves for coats, suits, and corporate apparel.</p>
+                    <a href="#" class="btn-primary" style="background: #708090; padding: 8px 15px;" data-filter-quick="wool">View Wool</a>
+                </div>
+            </div>
+            
+            <div class="callout-banner">
+                <h2>Ready for Bespoke Service?</h2>
+                <p>Contact our design team to discuss bulk orders or custom fabric sourcing.</p>
+                <a href="#" class="btn-primary" style="background: var(--primary);">Get a Quote</a>
+            </div>
+        </div>
+    </main>
+
+    <main id="shop-page">
+        <div class="controls-bar">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search by material name...">
+            </div>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Materials</button>
+                <button class="filter-btn" data-filter="cotton">Cotton Prints</button>
+                <button class="filter-btn" data-filter="silk">Luxury Silks</button>
+                <button class="filter-btn" data-filter="wool">Wool Blends</button>
+                <button class="filter-btn" data-filter="lace">Premium Lace</button>
+                <button class="filter-btn" data-filter="velvet">Velvet & Suede</button>
+            </div>
+        </div>
+        
+        <div class="container">
+             <div class="product-grid" id="product-grid">
+                </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 AJ-Empire. Quality Fabrics, African Heritage. </p>
+        <p>Disclaimer: This is a static demo website.</p>
+    </footer>
+
+    <div class="message-box" id="message-box"></div>
+
+    <script>
+        // 1. DATA: Array of clothing materials
+        const products = [
+            { id: 1, name: "Luxury Ghana Cotton Print", category: "cotton", price: 15.99, unit: "per yard", description: "Vibrant, durable, and 100% cotton.", imageUrl: "https://via.placeholder.com/300x250/964B00/FFFFFF?text=Cotton+Print" },
+            { id: 2, name: "Italian Silk Chiffon", category: "silk", price: 35.50, unit: "per metre", description: "Lightweight and sheer with a delicate drape.", imageUrl: "https://via.placeholder.com/300x250/800080/FFFFFF?text=Silk+Chiffon" },
+            { id: 3, name: "Merino Wool Blend", category: "wool", price: 42.00, unit: "per yard", description: "Soft, warm, and ideal for tailoring.", imageUrl: "https://via.placeholder.com/300x250/708090/FFFFFF?text=Merino+Wool" },
+            { id: 4, name: "French Guipure Lace", category: "lace", price: 68.99, unit: "per yard", description: "Heavy and intricate floral design.", imageUrl: "https://via.placeholder.com/300x250/F08080/000000?text=Guipure+Lace" },
+            { id: 5, name: "Stretch Velvet Fabric", category: "velvet", price: 22.75, unit: "per metre", description: "Deep pile with a comfortable stretch.", imageUrl: "https://via.placeholder.com/300x250/4B0082/FFFFFF?text=Stretch+Velvet" },
+            { id: 6, name: "Plain White Cotton Drill", category: "cotton", price: 8.50, unit: "per yard", description: "Heavyweight utility fabric for structure.", imageUrl: "https://via.placeholder.com/300x250/FFFFFF/000000?text=White+Cotton" },
+            { id: 7, name: "Moroccan Silk Brocade", category: "silk", price: 55.99, unit: "per metre", description: "Rich texture, metallic thread detailing.", imageUrl: "https://via.placeholder.com/300x250/DAA520/333333?text=Silk+Brocade" },
+            { id: 8, name: "Cashmere-Wool Coating", category: "wool", price: 89.00, unit: "per metre", description: "Ultimate luxury, perfect for winter coats.", imageUrl: "https://via.placeholder.com/300x250/000000/FFFFFF?text=Cashmere+Wool" },
+            { id: 9, name: "Nigerian Aso-Oke (Handwoven)", category: "cotton", price: 75.00, unit: "per piece", description: "Traditional woven fabric, rich cultural heritage.", imageUrl: "https://via.placeholder.com/300x250/FFD700/000000?text=Aso-Oke" },
+            { id: 10, name: "Embroided Tulle Lace", category: "lace", price: 45.50, unit: "per yard", description: "Delicate base with heavy sequin embroidery.", imageUrl: "https://via.placeholder.com/300x250/87CEEB/333333?text=Tulle+Lace" },
+            { id: 11, name: "Crushed Velvet", category: "velvet", price: 18.00, unit: "per metre", description: "Unique texture with a shimmering effect.", imageUrl: "https://via.placeholder.com/300x250/B22222/FFFFFF?text=Crushed+Velvet" },
+            { id: 12, name: "Tussar Silk Dupion", category: "silk", price: 28.00, unit: "per yard", description: "Natural texture with a slight stiffness.", imageUrl: "https://via.placeholder.com/300x250/F5DEB3/333333?text=Tussar+Silk" },
+        ];
+
+        // 2. DOM Elements & State
+        const homepage = document.getElementById('homepage');
+        const shopPage = document.getElementById('shop-page');
+        const productGrid = document.getElementById('product-grid');
+        const filterButtonsContainer = document.getElementById('filter-buttons');
+        const searchInput = document.getElementById('search-input');
+        const cartCountElement = document.getElementById('cart-count');
+        const messageBox = document.getElementById('message-box');
+        const navLinks = document.querySelectorAll('.nav-link, .logo, .hero-content button, .feature-card a');
+        
+        let currentCartCount = 0;
+        let activeFilter = 'all';
+
+        // 3. CORE PAGE & SHOP FUNCTIONS
+
+        /**
+         * Switches the view between Home and Shop pages.
+         * @param {string} page - 'home' or 'shop'.
+         * @param {string|null} initialFilter - Optional category to filter by upon arrival at the shop page.
+         */
+        function navigateTo(page, initialFilter = 'all') {
+            // 1. Update DOM Visibility
+            if (page === 'home') {
+                homepage.style.display = 'block';
+                shopPage.style.display = 'none';
+            } else if (page === 'shop') {
+                homepage.style.display = 'none';
+                shopPage.style.display = 'block';
+                // Reset/Apply filter on arrival
+                setActiveFilter(initialFilter);
+                filterAndSearchProducts(); 
+            }
+            
+            // 2. Update Nav Link Styling
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            const activeNav = document.querySelector(`.nav-link[data-page="${page}"]`);
+            if (activeNav) activeNav.classList.add('active');
+        }
+
+        /**
+         * Renders the product cards based on the filtered array.
+         * (This function is identical to the one in the previous response)
+         */
+        function renderProducts(filteredProducts) {
+            productGrid.innerHTML = '';
+            
+            if (filteredProducts.length === 0) {
+                productGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 50px;">No materials found matching your criteria.</p>';
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.setAttribute('data-category', product.category);
+                card.setAttribute('data-name', product.name.toLowerCase());
+                
+                card.innerHTML = `
+                    <div class="product-image-container">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <p class="product-category">${product.category.toUpperCase().replace('-', ' ')}</p>
+                            <h2 class="product-name">${product.name}</h2>
+                            <p class="product-description">${product.description}</p>
+                        </div>
+                        <div>
+                            <p class="product-price">$${product.price.toFixed(2)} ${product.unit}</p>
+                            <button class="action-button" data-product-id="${product.id}">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+            
+            // Reattach event listeners to the new "Add to Cart" buttons
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', handleAddToCart);
+            });
+        }
+        
+        /**
+         * Sets the active filter and updates button styles.
+         * @param {string} filterCategory - The category to filter by.
+         */
+        function setActiveFilter(filterCategory) {
+            activeFilter = filterCategory;
+            
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            const targetBtn = document.querySelector(`.filter-btn[data-filter="${filterCategory}"]`);
+            if (targetBtn) targetBtn.classList.add('active');
+        }
+
+        /**
+         * Filters the products array based on the active filter and search term.
+         */
+        function filterAndSearchProducts() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            const filtered = products.filter(product => {
+                const categoryMatch = activeFilter === 'all' || product.category === activeFilter;
+                const searchMatch = product.name.toLowerCase().includes(searchTerm);
+                
+                return categoryMatch && searchMatch;
+            });
+            
+            renderProducts(filtered);
+        }
+
+        // 4. EVENT HANDLERS
+
+        /**
+         * Handles all navigation clicks (Home link, Shop link, Hero button, Feature buttons).
+         */
+        function handleNavigationClick(e) {
+            const page = e.target.getAttribute('data-page');
+            const quickFilter = e.target.getAttribute('data-filter-quick');
+            
+            if (page) {
+                 e.preventDefault(); // Prevent default link behavior
+                 navigateTo(page);
+            } else if (quickFilter) {
+                 e.preventDefault();
+                 navigateTo('shop', quickFilter); // Navigate to shop and apply filter
+            }
+        }
+        
+        /**
+         * Handles filter button clicks on the shop page.
+         */
+        function handleFilterClick(e) {
+            const button = e.target;
+            if (!button.classList.contains('filter-btn')) return;
+            
+            setActiveFilter(button.getAttribute('data-filter'));
+            filterAndSearchProducts();
+        }
+        
+        /**
+         * Handles the click event for Add to Cart.
+         */
+        function handleAddToCart(e) {
+            const productId = parseInt(e.target.getAttribute('data-product-id'));
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                currentCartCount++;
+                cartCountElement.textContent = currentCartCount;
+                showMessage(`${product.name} added to cart!`, '#5C3317');
+                
+                // Briefly highlight the cart icon
+                const cartIcon = document.getElementById('cart-icon');
+                cartIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    cartIcon.style.transform = 'scale(1)';
+                }, 300);
+            }
+        }
+
+        /**
+         * Displays a temporary notification message.
+         */
+        function showMessage(text, bgColor) {
+            messageBox.textContent = text;
+            messageBox.style.backgroundColor = bgColor;
+            messageBox.classList.add('show');
+            
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 3000);
+        }
+
+
+        // 5. INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initial Page Load: Start on Home
+            navigateTo('home');
+
+            // 2. Attach Global Navigation Listeners
+            navLinks.forEach(link => {
+                link.addEventListener('click', handleNavigationClick);
+            });
+            
+            // 3. Attach Shop Page Listeners
+            filterButtonsContainer.addEventListener('click', handleFilterClick);
+            searchInput.addEventListener('keyup', filterAndSearchProducts);
+            searchInput.addEventListener('input', filterAndSearchProducts);
+        });
+
+    </script>
+</body>
+</html>
