@@ -829,10 +829,31 @@ a:hover {
             <div class="close-menu-container">
                 <button class="closebtn" id="close-menu-btn">Close Menu X</button>
             </div>
-            
+         
+         
             <input type="text" id="mobile-search-input" class="search-input" placeholder="Search Materials..." onkeypress="if(event.key === 'Enter') handleSearch()">
             <button onclick="handleSearch()" class="submit-button" id="mobile-search-button">Search</button>
-            
+      
+
+
+             <!-- <div class="mobile-menu-content">
+    
+    <form id="mobile-search-form" style="padding-bottom: 20px; border-bottom: 1px solid var(--color-border-light);">
+        <input 
+            type="text" 
+            placeholder="Search for Material..." 
+            class="search-input" 
+            id="mobile-search-input"
+            required
+        >
+        <button class="submit-button" type="submit">Search</button>
+    </form>
+
+    <ul class="mobile-nav-links">
+        </ul>
+</div> -->
+
+
             <ul class="mobile-nav-links">
                 <li><a href="#" onclick="updateUI('NEW ARRIVALS'); toggleMobileMenu();">NEW ARRIVALS</a></li>
                 <li><a href="#" onclick="updateUI('ANKARA'); toggleMobileMenu();">ANKARA PRINTS</a></li>
@@ -960,7 +981,7 @@ a:hover {
     </a>
 </div>
 
-    <script>
+   <script>
     // --- CONSTANTS ---
     // CRITICAL: Replace 'YOURWHATSAPPNUMBER' with your full number (e.g., 2348000000000). 
     // DO NOT include spaces, hyphens, or the '+' sign here.
@@ -1123,7 +1144,7 @@ a:hover {
     /**
      * Core logic for filtering products based on the search query.
      */
-    function updateUI(query) {
+    function updateUI(query, isMobileSearch = false) {
         const normalizedQuery = query.trim().toUpperCase();
         
         // 1. Filter the products
@@ -1145,20 +1166,49 @@ a:hover {
         currentPage = 1;
         renderProducts(false); // Render new set
         
-        // Scroll to the product section
-        document.getElementById('store-section').scrollIntoView({ behavior: 'smooth' });
+        // 4. Scroll and Close Menu (THE FIX)
+        const targetSection = document.getElementById('store-section');
+        
+        // If the search came from the mobile menu, close it first
+        if (isMobileSearch) {
+             // We use a timeout to let the menu close smoothly before scrolling starts
+            setTimeout(() => {
+                // Ensure the menu is closed using your existing toggle function
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenu && mobileMenu.classList.contains('open')) {
+                    toggleMobileMenu();
+                }
+                
+                // Now scroll
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 300); // 300ms delay for the menu transition
+        } else if (targetSection) {
+            // For desktop search, scroll immediately
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
     }
     
-    // --- SEARCH HANDLER ---
-    function handleSearch() {
+    // --- SEARCH HANDLER (ENTRY POINT) ---
+    function handleSearch(event) {
+        // Find which button triggered the event
+        const isMobileButton = event.currentTarget.id === 'mobile-search-button';
+        
         // Get value from either desktop or mobile input
         const desktopInput = document.getElementById('search-input');
         const mobileInput = document.getElementById('mobile-search-input');
         
         // Prioritize the value that has content
-        const query = desktopInput.value || mobileInput.value;
+        const query = (desktopInput && desktopInput.value) || (mobileInput && mobileInput.value);
         
-        updateUI(query);
+        if (query) {
+             updateUI(query, isMobileButton);
+        }
+        
+        // Clear the input used for the search (important for not double-triggering)
+        if (isMobileButton && mobileInput) mobileInput.value = '';
+        if (!isMobileButton && desktopInput) desktopInput.value = '';
     }
 
     // --- WHATSAPP LISTENER SETUP (Event Delegation) ---
@@ -1215,21 +1265,49 @@ a:hover {
         loadMoreBtn = document.getElementById('load-more-btn'); 
 
         // 2. Initial product load
-        updateUI(''); 
+        // Initial call must be wrapped to ensure DOM elements are defined
+        if (productGrid && resultCountElement && loadMoreBtn) {
+            updateUI(''); 
+        }
 
         // 3. Attach event listeners
-        document.querySelector('.search-container .search-button').addEventListener('click', handleSearch);
-        document.getElementById('mobile-search-button').addEventListener('click', handleSearch);
+        // Desktop search button
+        const desktopSearchButton = document.querySelector('.search-container .search-button');
+        if (desktopSearchButton) {
+            desktopSearchButton.addEventListener('click', handleSearch);
+        }
+        
+        // Mobile search button
+        const mobileSearchButton = document.getElementById('mobile-search-button');
+        if (mobileSearchButton) {
+            mobileSearchButton.addEventListener('click', handleSearch);
+        }
+        
+        // Mobile search input (for 'Enter' key press if you use onkeypress="handleSearch(event)")
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        if (mobileSearchInput) {
+            // Note: If you use onkeypress="handleSearch()" in HTML, the event parameter is optional
+            // The handleSearch function is now robust enough to figure out the source.
+            // If you use an event listener, you would use:
+            // mobileSearchInput.addEventListener('keypress', (event) => { if (event.key === 'Enter') handleSearch(event); });
+        }
+
+
         loadMoreBtn.addEventListener('click', handleLoadMore);
 
         // Menu buttons
-        document.getElementById('hamburger-icon').addEventListener('click', toggleMobileMenu);
-        document.getElementById('close-menu-btn').addEventListener('click', toggleMobileMenu);
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+
+        if (hamburgerIcon) hamburgerIcon.addEventListener('click', toggleMobileMenu);
+        if (closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMobileMenu);
         
         // WhatsApp interaction delegation
-        setupWhatsAppInteractions();
+        if (productGrid) {
+            setupWhatsAppInteractions();
+        }
     }
-    </script>
+</script>
 
 </body>
 </html>
