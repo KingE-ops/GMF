@@ -279,21 +279,24 @@ a:hover {
 }
 
 /* --------------------- Hero Section --------------------- */
+
 .hero-section {
     height: 85vh; 
     max-height: 850px;
-    display: flex;
+     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('./images.html/woman-1867608_1280.jpg'); 
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('https://cdn.pixabay.com/photo/2016/11/29/05/44/woman-1867608_1280.jpg'); 
     background-size: cover;
     background-position: center center;
-    background-attachment: fixed; 
+    background-attachment: fixed; /* <-- THIS IS THE CULPRIT */
+    background-repeat: no-repeat; 
     color: var(--color-text-dark);
     padding: 20px 0;
 }
+
 .hero-title {
     font-family: var(--font-serif);
     font-size: 5.5em; 
@@ -776,6 +779,20 @@ a:hover {
         right: 20px;
     }
 }
+
+/* --------------------- MOBILE RESPONSIVENESS --------------------- */
+@media (max-width: 768px) {
+
+    /* ... existing mobile styles ... */
+
+    /* 🚩 FIX FOR iOS BACKGROUND ISSUE 🚩 */
+    .hero-section {
+        /* Force the background to scroll normally instead of being fixed */
+        background-attachment: scroll !important; 
+    }
+
+    /* ... rest of the existing mobile styles ... */
+}
 </style>
 
 <header class="header">
@@ -937,18 +954,17 @@ a:hover {
         </div>
     </footer>
 
-    <div class="whatsapp-chat">
-        <a href="https://api.whatsapp.com/send/?phone=YOURWHATSAPPNUMBER" target="_blank">
-            <span class="whatsapp-icon">&#x1F4AC;</span>
-            <span class="whatsapp-text">CHAT NOW</span>
-        </a>
-    </div>
+ <div class="product-card-overlay">
+    <a href="https://wa.me/2348062477493" target="_blank" class="whatsapp-chat-icon-product" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+</div>
 
     <script>
     // --- CONSTANTS ---
     // CRITICAL: Replace 'YOURWHATSAPPNUMBER' with your full number (e.g., 2348000000000). 
     // DO NOT include spaces, hyphens, or the '+' sign here.
-    const WHATSAPP_NUMBER_RAW = 'YOURWHATSAPPNUMBER'; 
+    const WHATSAPP_NUMBER_RAW = '2348062477493'; 
     const WHATSAPP_NUMBER = '+' + WHATSAPP_NUMBER_RAW.replace(/[^0-9]/g, '');
 
     // --- PRODUCT DATA (FIXED DUPLICATE IDS) ---
